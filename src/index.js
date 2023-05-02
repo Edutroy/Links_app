@@ -2,7 +2,10 @@ const express =require('express');
 const morgan =require('morgan');
 const exphbs =require ('express-handlebars');
 const path = require('path');
-
+const flash =require('connect-flash');
+const session =require('express-session');
+const MySQLStore  = require('express-mysql-session')(session);
+const { database } =require ('./keys');
 //initiallizations
 
 const app = express();
@@ -21,18 +24,33 @@ app.engine('.hbs', exphbs.engine({
 app.set('view engine', '.hbs');
 
 //midlewares
+
+
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false})); //acepta desde el formulario los datos que envian los usuarios
 app.use(express.json());
+app.use(session({
+    secret:'faztmysqlnodesession',
+    resave: false,
+    resave: false,
+  saveUninitialized: false ,
+  store: new MySQLStore(database)
+}));
+app.use(flash());
+
 
 //global Variables
+
 app.use((req,res,next) =>{
+    app.locals.success=req.flash('success');
     next();
-})
+});
+
 // Routes   
 app.use(require('./routes'));
 app.use(require('./routes/authentication'));
 app.use('/links',require('./routes/links'));
+
 
 //Public
 app.use(express.static(path.join(__dirname, 'public')))
