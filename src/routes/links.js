@@ -25,7 +25,7 @@ router.get ('/',isLoggedIn, async (req, res)=>{
     console.log(links);
     res.render("links/list", {links});
     
-})
+});
 
 router.get('/delete/:id',isLoggedIn, async (req, res) => {
     const { id } = req.params;
@@ -53,5 +53,7 @@ await pool.query('UPDATE links set ? WHERE id = ?', [newLink, id]);
 req.flash('success', 'Link Updated Successfully');
 res.redirect('/links');
 });;
+
+
 
 module.exports =router; 

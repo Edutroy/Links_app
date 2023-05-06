@@ -45,4 +45,8 @@ router.get('/profile', isLoggedIn, (req, res) => {
     });
 });
 
+router.get ('/users',(req, res)=>{
+  res.render('admin/users'); 
+});
+
 module.exports =router;
