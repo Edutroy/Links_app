@@ -5,6 +5,7 @@ const helpers ={};
 helpers.timeago = (Timestamp) => {
     return format(Timestamp);
 };
+//Con esta funcion acepta el eq en handlebars
 
 const Handlebars = require('handlebars');
 

@@ -16,10 +16,13 @@
         <!-- Código si el usuario es un usuario normal -->
         {{#if user }}
         <li class="nav-item">
-          <h4  class="nav-link disabled" >{{user.rol}}</h4>
+          <h5  class="nav-link disabled" >{{user.rol}}</h5>
         </li> 
         <li class="nav-item">
-          <a class="nav-link disabled" href="/users"> Show users </a>
+          <a class="nav-link" href="/newadmin">New Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/users"> Show users </a>
         </li> 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

@@ -1,5 +1,6 @@
 const express =require('express');
 const router= express.Router();
+const pool = require ('../database');
 const passport =  require('passport');
 const { isLoggedIn,isNotLoggedIn } = require('../lib/auth');
 
@@ -45,8 +46,29 @@ router.get('/profile', isLoggedIn, (req, res) => {
     });
 });
 
-router.get ('/users',(req, res)=>{
-  res.render('admin/users'); 
+router.get ('/users', async (req, res)=>{
+ 
+  const usuarios = await pool.query('SELECT * FROM users');
+  const userIds = usuarios.map(user => user.id); // extract the IDs from the users array
+  const links = await pool.query('SELECT * FROM links WHERE user_id IN (?)', [userIds]);
+
+  const usersWithLinks = usuarios.map(user => {
+    const userLinks = links.filter(link => link.user_id === user.id);
+    return { ...user, links: userLinks };
+  });
+
+  res.render('admin/users', { usuarios: usersWithLinks });
 });
+
+router.get ('/newadmin',isLoggedIn ,(req,res) =>{
+  res.render('auth/newadmin');
+  ;})
+
+router.post('/newadmin',isLoggedIn, passport.authenticate('local.newadmin', {
+    successRedirect: '/users',
+    failureRedirect: '/newadmin',
+    failureFlash: true
+}
+));
 
 module.exports =router;

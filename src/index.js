@@ -17,15 +17,15 @@ require('./lib/passport');
 
 app.set('port',process.env.PORT || 8000);//si hay un puerto diponible usalo sino usa el 8000
 app.set('views',path.join(__dirname, 'views'))// les dice donde se encuentra la carpeta views
-    app.engine('.hbs', exphbs.engine({
+app.engine('.hbs', exphbs.engine({
         defaultLayout: 'main',
-            layoutsDir: path.join(app.get('views'),'layouts'),
-            partialsDir: path.join(app.get('views'),'partials'),
-            adminDir: path.join(app.get('views'),'admin'),
+        layoutsDir: path.join(app.get('views'),'layouts'),
+        partialsDir: path.join(app.get('views'),'partials'),
+        adminDir: path.join(app.get('views'),'admin'),
         extname : '.hbs',
         helpers:require ('./lib/handlebars')
     }));
-    app.set('view engine', '.hbs');
+app.set('view engine', '.hbs');
 
 //midlewares
 

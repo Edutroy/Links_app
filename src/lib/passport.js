@@ -32,7 +32,8 @@ passport.use('local.signup', new LocalStrategy({
   const newUser ={
     username,
     password,
-    fullname
+    fullname,
+    rol:'usuario'
   };
   newUser.password = await helpers.encryptPassword(password);
   // Saving in the Database
@@ -41,6 +42,28 @@ passport.use('local.signup', new LocalStrategy({
   return done(null, newUser);
 }));
 
+
+  passport.use('local.newadmin', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    
+    passReqToCallback: true
+  }, async (req, username, password, done) => {
+  const {fullname}= req.body;
+  const newUser ={
+    username,
+    password,
+    fullname,
+    rol:'admin'
+  };
+newUser.password = await helpers.encryptPassword(password);
+// Saving in the Database
+const result = await pool.query('INSERT INTO users SET ? ', [newUser]);
+newUser.id = result.insertId;
+return done(null, newUser);
+}));
+
+
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
@@ -48,4 +71,3 @@ passport.use('local.signup', new LocalStrategy({
     const rows = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
     done(null, rows[0]);
   });
-
