@@ -9,13 +9,11 @@ const { database } =require ('./keys');
 const passport =require ('passport');
 
 //initiallizations
-
 const app = express();
 require('./lib/passport');
 
 //settings
-
-app.set('port',process.env.PORT || 8000);//si hay un puerto diponible usalo sino usa el 8000
+app.set('port',process.env.PORT || 6810);//si hay un puerto diponible usalo sino usa el 8000
 app.set('views',path.join(__dirname, 'views'))// les dice donde se encuentra la carpeta views
 app.engine('.hbs', exphbs.engine({
         defaultLayout: 'main',
@@ -28,8 +26,6 @@ app.engine('.hbs', exphbs.engine({
 app.set('view engine', '.hbs');
 
 //midlewares
-
-
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false})); //acepta desde el formulario los datos que envian los usuarios
 app.use(express.json());
@@ -43,7 +39,6 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 //global Variables
 
