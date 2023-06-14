@@ -2,7 +2,8 @@ const express =require('express');
 const router= express.Router();
 const pool = require ('../database');
 const passport =  require('passport');
-const { isLoggedIn,isNotLoggedIn } = require('../lib/auth');
+const { isLoggedIn,isNotLoggedIn,ensureAdmin } = require('../lib/auth');
+
 
 router.get ('/signup',isNotLoggedIn ,(req,res) =>{
 res.render('auth/signup');
@@ -46,7 +47,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
     });
 });
 
-router.get ('/users', async (req, res)=>{
+router.get ('/users',ensureAdmin, async (req, res)=>{
  
   const usuarios = await pool.query('SELECT * FROM users');
   const userIds = usuarios.map(user => user.id); // extract the IDs from the users array
