@@ -51,6 +51,7 @@ app.use((req,res,next) =>{
 
 // Routes   
 app.use(require('./routes'));
+
 app.use(require('./routes/authentication'));
 app.use('/links',require('./routes/links'));
 
@@ -58,6 +59,8 @@ app.use('/links',require('./routes/links'));
 
 
 //Starting Server 
-app.listen(app.get('port'),() => {
-    console.log('Server on port',app.get('port'));//Muestra en que puerto se ejecuta
-});
+const server = app.listen(app.get('port'), () => {
+    console.log('Server on port', app.get('port')); // Muestra en qué puerto se ejecuta
+  });
+  
+  server.timeout = 5000;
